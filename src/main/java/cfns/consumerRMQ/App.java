@@ -8,15 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.*;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
 public class App {
@@ -46,7 +40,7 @@ public class App {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueDeclare(QUEUE_NAME, true, false, false, null);
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
         // Callback to handle incoming messages
@@ -79,8 +73,6 @@ public class App {
                                 "cell_plmn = EXCLUDED.cell_plmn, " +
                                 "tac_lac = EXCLUDED.tac_lac, " +
                                 "cell_utran_id = EXCLUDED.cell_utran_id";
-                               // "lat_mast = EXCLUDED.lat_mast, " +
-                              //  "long_mast = EXCLUDED.long_mast";
 
                         try (PreparedStatement pstmt = dbConnection.prepareStatement(insertConnSQL)) {
                             for (int i = 0; i < connArray.length(); i++) {
@@ -114,7 +106,7 @@ public class App {
                         JSONArray weatherArray = jsonTables.getJSONArray("weather");
                         String insertWeatherSQL = "INSERT INTO weather (id, temp, humid, winddir, windspeed, dauw, druk, time) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, CAST(? AS timestamp)) " +
-                                "ON CONFLICT (id, time) DO UPDATE SET " +
+                                "ON CONFLICT (time, id) DO UPDATE SET " +
                                 "temp = EXCLUDED.temp, " +
                                 "humid = EXCLUDED.humid, " +
                                 "winddir = EXCLUDED.winddir, " +
@@ -146,8 +138,7 @@ public class App {
                     System.out.println("Failed to insert data: " + e.getMessage());
                     e.printStackTrace();
                 }
-                
-//                startMastLocatieVerwerkerScript();
+             
 
             } catch (Exception e) {
                 System.out.println("Error processing message: " + e.getMessage());
@@ -158,25 +149,5 @@ public class App {
         boolean autoAck = false;
         channel.basicConsume(QUEUE_NAME, autoAck, deliverCallback, consumerTag -> { });
     }
-    
-//    private static void startMastLocatieVerwerkerScript() {
-//        try {
-//            Path tempScript = Files.createTempFile("mastLocatieVerwerker", ".py");
-//            try (InputStream scriptStream = App.class.getResourceAsStream("/resources/mastLocatieVerwerker.py")) {
-//                if (scriptStream == null) {
-//                    throw new FileNotFoundException("Python script not found in resources");
-//                }
-//                Files.copy(scriptStream, tempScript, StandardCopyOption.REPLACE_EXISTING);
-//            }
-//
-//            // Windows-specific command to open a new command prompt window
-//            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "start", "python", tempScript.toAbsolutePath().toString());
-//            processBuilder.start();
-//
-//        } catch (IOException e) {
-//            System.out.println("Failed to execute Python script: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
     
 }
