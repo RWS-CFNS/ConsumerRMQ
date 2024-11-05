@@ -60,12 +60,13 @@ public class App {
                  // Handle conn table
                     if (jsonTables.has("conn")) {
                         JSONArray connArray = jsonTables.getJSONArray("conn");
-                        String insertConnSQL = "INSERT INTO conn (id, mno, coordinates, rsrq, rsrp, sinr, mastid, tijd, rssi, lat, long, type, cell_plmn, tac_lac, cell_utran_id) " +
+                        String insertConnSQL = "INSERT INTO conn (id, mno, coordinates, rsrq, rsrp, sinr, weather_id, tijd, rssi, lat, long, type, cell_plmn, tac_lac, cell_utran_id) " +
                                 "VALUES (?, ?, ST_GeogFromText(?), ?, ?, ?, ?, CAST(? AS timestamp), ?, ?, ?, ?, ?, ?, ? ) " +
                                 "ON CONFLICT (id, tijd) DO UPDATE SET " +
                                 "rsrq = EXCLUDED.rsrq, " +
                                 "rsrp = EXCLUDED.rsrp, " +
                                 "sinr = EXCLUDED.sinr, " +
+                                "weather_id = EXCLUDED.weather_id, " +
                                 "rssi = EXCLUDED.rssi, " +
                                 "lat = EXCLUDED.lat, " +
                                 "long = EXCLUDED.long, " +
@@ -83,18 +84,15 @@ public class App {
                                 pstmt.setFloat(4, jsonRow.getFloat("rsrq"));
                                 pstmt.setFloat(5, jsonRow.getFloat("rsrp"));
                                 pstmt.setFloat(6, jsonRow.getFloat("sinr"));
-                                pstmt.setInt(7, jsonRow.getInt("mastid"));
+                                pstmt.setInt(7, jsonRow.getInt("weather_id"));
                                 pstmt.setString(8, jsonRow.getString("tijd"));
                                 pstmt.setInt(9, jsonRow.getInt("rssi"));
                                 pstmt.setFloat(10, jsonRow.getFloat("lat"));
                                 pstmt.setFloat(11, jsonRow.getFloat("long"));
                                 pstmt.setString(12, jsonRow.getString("type"));
-                                
                                 pstmt.setInt(13, jsonRow.getInt("cell_plmn"));
                                 pstmt.setInt(14, jsonRow.getInt("tac_lac"));
                                 pstmt.setInt(15, jsonRow.getInt("cell_utran_id"));
-                                //pstmt.setFloat(16, jsonRow.getFloat("lat_mast"));
-                                //pstmt.setFloat(17, jsonRow.getFloat("long_mast"));
                                 pstmt.addBatch();
                             }
                             pstmt.executeBatch();
