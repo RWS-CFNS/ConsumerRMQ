@@ -62,18 +62,7 @@ public class App {
                         JSONArray connArray = jsonTables.getJSONArray("conn");
                         String insertConnSQL = "INSERT INTO conn (id, mno, coordinates, rsrq, rsrp, sinr, weather_id, tijd, rssi, lat, long, type, cell_plmn, tac_lac, cell_utran_id) " +
                                 "VALUES (?, ?, ST_GeogFromText(?), ?, ?, ?, ?, CAST(? AS timestamp), ?, ?, ?, ?, ?, ?, ? ) " +
-                                "ON CONFLICT (id, tijd) DO UPDATE SET " +
-                                "rsrq = EXCLUDED.rsrq, " +
-                                "rsrp = EXCLUDED.rsrp, " +
-                                "sinr = EXCLUDED.sinr, " +
-                                "weather_id = EXCLUDED.weather_id, " +
-                                "rssi = EXCLUDED.rssi, " +
-                                "lat = EXCLUDED.lat, " +
-                                "long = EXCLUDED.long, " +
-                                "type = EXCLUDED.type, " +
-                                "cell_plmn = EXCLUDED.cell_plmn, " +
-                                "tac_lac = EXCLUDED.tac_lac, " +
-                                "cell_utran_id = EXCLUDED.cell_utran_id";
+                                "ON CONFLICT (id, tijd) DO NOTHING ";
 
                         try (PreparedStatement pstmt = dbConnection.prepareStatement(insertConnSQL)) {
                             for (int i = 0; i < connArray.length(); i++) {
@@ -104,13 +93,7 @@ public class App {
                         JSONArray weatherArray = jsonTables.getJSONArray("weather");
                         String insertWeatherSQL = "INSERT INTO weather (id, temp, humid, winddir, windspeed, dauw, druk, time) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, CAST(? AS timestamp)) " +
-                                "ON CONFLICT (time, id) DO UPDATE SET " +
-                                "temp = EXCLUDED.temp, " +
-                                "humid = EXCLUDED.humid, " +
-                                "winddir = EXCLUDED.winddir, " +
-                                "windspeed = EXCLUDED.windspeed, " +
-                                "dauw = EXCLUDED.dauw, " +
-                                "druk = EXCLUDED.druk";
+                                "ON CONFLICT (time, id) DO NOTHING ";
 
                         try (PreparedStatement pstmt = dbConnection.prepareStatement(insertWeatherSQL)) {
                             for (int i = 0; i < weatherArray.length(); i++) {
@@ -123,6 +106,24 @@ public class App {
                                 pstmt.setFloat(6, jsonRow.getFloat("dauw"));
                                 pstmt.setFloat(7, jsonRow.getFloat("druk"));
                                 pstmt.setString(8, jsonRow.getString("time"));
+                                pstmt.addBatch();
+                            }
+                            pstmt.executeBatch();
+                        }
+                    }
+                    
+                    if (jsonTables.has("ais")) {
+                        JSONArray aisArray = jsonTables.getJSONArray("ais");
+                        String insertAisSQL = "INSERT INTO ais (id, ais_message, received_at) " +
+                                "VALUES (?, ?, CAST(? AS timestamp)) " +
+                                "ON CONFLICT (id, received_at) DO NOTHING";
+
+                        try (PreparedStatement pstmt = dbConnection.prepareStatement(insertAisSQL)) {
+                            for (int i = 0; i < aisArray.length(); i++) {
+                                JSONObject jsonRow = aisArray.getJSONObject(i);
+                                pstmt.setInt(1, jsonRow.getInt("id"));
+                                pstmt.setString(2, jsonRow.getString("ais_message"));
+                                pstmt.setString(3, jsonRow.getString("received_at"));
                                 pstmt.addBatch();
                             }
                             pstmt.executeBatch();
