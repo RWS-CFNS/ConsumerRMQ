@@ -22,7 +22,6 @@ public class App {
     	    properties.load(input);
     	} catch (IOException e) {
     	    System.out.println("Sorry, unable to find config.properties");
-    	    e.printStackTrace();
     	    return;
     	}
 
@@ -135,13 +134,11 @@ public class App {
 
                 } catch (SQLException e) {
                     System.out.println("Failed to insert data: " + e.getMessage());
-                    e.printStackTrace();
                 }
              
 
             } catch (Exception e) {
                 System.out.println("Error processing message: " + e.getMessage());
-                e.printStackTrace();
             }
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         };
