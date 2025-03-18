@@ -60,8 +60,6 @@ This application automates the process of retrieving and transmitting database r
 * **JSON Data Transformation**: Converts SQL query results into structured JSON objects for easy integration with other systems.
 * **Message Queue Integration**: Uses RabbitMQ to efficiently distribute data for downstream applications or analysis.
 
-Use the `BLANK_README.md` to get started.
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
