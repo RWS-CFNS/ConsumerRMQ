@@ -90,8 +90,8 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 RabbitMQ and PostgreSQL Setup:
 
-* RabbitMQ should be running on the host and port specified in your config.properties. This application will connect to it to listen for messages.
-* PostgreSQL should also be running with the mirrored version of the Producers database.
+* RabbitMQ should be running on the host and ip specified in your config.properties. This application will connect to it to listen for messages.
+* PostgreSQL should also be running with the mirrored version of the Producers database on the host and ip + port specified in your config.properties.
 * Ensure the correct credentials are provided in the config.properties.
 
 Java Runtime Environment (JRE):
@@ -108,13 +108,13 @@ Make sure you have a compatible JRE (Java Runtime Environment) installed, JRE 8 
    ```python
     PostgreSQL Configuratie
     db.url=jdbc:postgresql://<ip>:<port>/<database_name>
-    db.username="username"
-    db.password="password"
+    db.username=<username>
+    db.password=<password>
 
     RabbitMQ Configuratie
-    rabbitmq.host="ip"
-    rabbitmq.username="username"
-    rabbitmq.password="password"
+    rabbitmq.host=<ip>
+    rabbitmq.username=<username>
+    rabbitmq.password=<password>
    ```
 3. Run the script:
    ```sh
