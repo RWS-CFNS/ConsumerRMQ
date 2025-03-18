@@ -6,7 +6,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/RWS-CFNS/consumerRMQ">
+  <a href="https://github.com/RWS-CFNS/ConsumerRMQ">
     <img src="images/ConsumerRMQLogo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -134,7 +134,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-shield]: https://img.shields.io/github/license/RWS-CFNS/ConsumerRMQ.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/RWS-CFNS/consumerRMQ.svg?style=for-the-badge
 [license-url]: https://github.com/RWS-CFNS/ConsumerRMQ/blob/main/LICENSE
 
 [Eclipse.org]: https://img.shields.io/badge/Eclipse-7E48BD?style=for-the-badge&logo=eclipse&logoColor=white
