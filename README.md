@@ -72,6 +72,7 @@ Use the `BLANK_README.md` to get started.
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 [![Eclipse][Eclipse.org]][Eclipse-url]
+[![openjdk][openjdk.org]][openjdk-url]
 [![Maven][Maven.org]][Maven-url]
 [![RabbitMQ][Rabbitmq.com]][Rabbitmq-url]
 [![JSON][json.org]][json-url]
@@ -145,3 +146,5 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 [Rabbitmq-url]: https://rabbitmq.com/
 [json.org]: https://img.shields.io/badge/json-589632?style=for-the-badge&logo=json&logoColor=white
 [json-url]: https://json.com/
+[openjdk.org]: https://img.shields.io/badge/openjdk-0075C9?style=for-the-badge&logo=openjdk&logoColor=white
+[openjdk-url]: https://openjdk.org/
