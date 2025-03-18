@@ -93,7 +93,18 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 ### Prerequisites
 
-Ensure you have Python 3 installed on your system.
+RabbitMQ and PostgreSQL Setup:
+
+* RabbitMQ should be running on the host and port specified in your config.properties. This application will connect to it to listen for messages.
+* PostgreSQL should also be running with the mirrored version of the Producers database.
+* Ensure the correct credentials are provided in the config.properties.
+
+Java Runtime Environment (JRE):
+
+Make sure you have a compatible JRE (Java Runtime Environment) installed, JRE 8 or higher is required.
+   ```sh
+   java -version
+   ```
 
 ### Installation
 
@@ -109,22 +120,15 @@ Ensure you have Python 3 installed on your system.
     rabbitmq.host="ip"
     rabbitmq.username="username"
     rabbitmq.password="password"
-    
-    SQL Limit
-    sql.limit="amount of rows"
-    
-    Tables to Send
-    send.weather="true/false"
-    send.conn="true/false"
-    send.ais="true/false"
    ```
-3. Run the script manually to test:
+3. Run the script:
    ```sh
-   java -jar produceRMQ.jar
+   java -jar consumerRMQ.jar
    ```
+It will now listen for incoming messages send by the Producer and forward it into the specified database.
 
 ## Usage
-This application is designed for sending data to and from a PostgreSQL database using RabbitMQ and JSON for batch processing. It retrieves records from the database, converts them into JSON format, and publishes them to a message queue for further processing. The combination of PostgreSQL, RabbitMQ, and JSON enables seamless integration with various data-driven applications.
+This application is designed for consuming data from a RabbitMQ message queue, processing it, and storing the results into a PostgreSQL database. It listens for incoming messages in the queue, retrieves the JSON data, and processes it accordingly before inserting the relevant information into the database. The integration of RabbitMQ and PostgreSQL ensures efficient and reliable data handling, making it an ideal solution for applications that require real-time data processing and storage.
 
 <!-- LICENSE -->
 ## License
@@ -136,7 +140,7 @@ Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [license-shield]: https://img.shields.io/github/license/RWS-CFNS/ConsumerRMQ.svg?style=for-the-badge
-[license-url]: https://github.com/RWS-CFNS/ConsumerRMQ/blob/master/LICENSE.txt
+[license-url]: https://github.com/RWS-CFNS/ConsumerRMQ/blob/main/LICENSE
 
 [Eclipse.org]: https://img.shields.io/badge/Eclipse-7E48BD?style=for-the-badge&logo=eclipse&logoColor=white
 [Eclipse-url]: https://Eclipse.org/
